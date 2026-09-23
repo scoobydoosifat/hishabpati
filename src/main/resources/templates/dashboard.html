@@ -54,7 +54,7 @@
             </span>
             <span class="stat-body">
                 <span class="stat-label">Total Expenses</span>
-                <span class="stat-value" data-count="${metrics.totalExpenses}" th:text="${metrics.totalExpenses}">0</span>
+                <span class="stat-value" th:attr="data-count=${metrics.totalExpenses}" th:text="${metrics.totalExpenses}">0</span>
             </span>
         </div>
         <div class="stat-card">
@@ -65,7 +65,7 @@
             </span>
             <span class="stat-body">
                 <span class="stat-label">Total Spent</span>
-                <span class="stat-value accent" data-count="${metrics.totalSpent}" data-money="true" th:text="${'৳ ' + #numbers.formatDecimal(metrics.totalSpent, 1, 2)}">৳ 0.00</span>
+                <span class="stat-value accent" data-money="true" th:attr="data-count=${metrics.totalSpent}" th:text="${'৳ ' + #numbers.formatDecimal(metrics.totalSpent, 1, 2)}">৳ 0.00</span>
             </span>
         </div>
         <div class="stat-card">
@@ -76,7 +76,7 @@
             </span>
             <span class="stat-body">
                 <span class="stat-label">Categories Used</span>
-                <span class="stat-value" data-count="${metrics.categoryTotals.size()}" th:text="${metrics.categoryTotals.size()}">0</span>
+                <span class="stat-value" th:attr="data-count=${metrics.categoryTotals.size()}" th:text="${metrics.categoryTotals.size()}">0</span>
             </span>
         </div>
     </div>
@@ -176,10 +176,10 @@
             if (!start) start = ts;
             var p = Math.min((ts - start) / duration, 1);
             var eased = 1 - Math.pow(1 - p, 3);
-            var value = Math.floor(eased * target);
+            var value = eased * target;
             el.textContent = isMoney
                 ? '৳ ' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-                : value.toLocaleString('en-US');
+                : Math.round(value).toLocaleString('en-US');
             if (p < 1) requestAnimationFrame(step);
         };
         requestAnimationFrame(step);
@@ -189,8 +189,10 @@
             if (!entry.isIntersecting) return;
             var el = entry.target;
             cio.unobserve(el);
+            var target = parseFloat(el.getAttribute('data-count'));
+            if (isNaN(target)) return;
             setTimeout(function () {
-                animateCount(el, parseFloat(el.getAttribute('data-count')) || 0, el.hasAttribute('data-money'));
+                animateCount(el, target, el.hasAttribute('data-money'));
             }, 150);
         });
     }, { threshold: 0.4 });
