@@ -3,34 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HishabPati - Expense Tracker</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <title>HishabPati - Your Day-to-Day Expense Tracker</title>
+    <link rel="stylesheet" th:href="@{/css/landing.css}">
 </head>
 <body>
-<main class="container">
-    <section class="hero">
-        <h1>HishabPati</h1>
-        <p class="tagline">Your simple day-to-day expense tracker. Track spending, stay in control, and know exactly where your money goes.</p>
-        <div class="hero-actions">
-            <a class="btn btn-primary" th:href="@{/login}">Sign In</a>
-            <a class="btn btn-ghost" th:href="@{/signup}">Create Account</a>
-        </div>
+<!-- Animated backdrop -->
+<div class="backdrop" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+</div>
+<div class="grid-overlay" aria-hidden="true"></div>
 
-        <div class="hero-features">
-            <div class="feature">
-                <h3>Easy Tracking</h3>
-                <p>Add expenses in seconds with categories, amounts and notes.</p>
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+    <div class="nav-inner">
+        <a class="brand" th:href="@{/}">
+            <span class="logo-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/>
+                    <path d="M8 8h8M8 12h8M8 16h5"/>
+                </svg>
+            </span>
+            Hishab<em>Pati</em>
+        </a>
+        <div class="nav-links">
+            <a th:href="@{#features}">Features</a>
+            <a th:href="@{#how}">How it works</a>
+            <a th:href="@{#testimonial}">Stories</a>
+        </div>
+        <div class="nav-cta">
+            <a class="btn btn-ghost" th:href="@{/login}">Sign In</a>
+            <a class="btn btn-primary" th:href="@{/signup}">Get Started
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+    <div class="hero-copy">
+        <span class="pill"><span class="dot"></span> Your money, finally made simple</span>
+        <h1>Track every taka.<br><span class="gradient-text">Stay in control.</span></h1>
+        <p class="tagline">
+            HishabPati is your simple day-to-day expense tracker. Add spending in seconds,
+            watch your totals live, and know exactly where your money goes — no spreadsheets, no stress.
+        </p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" th:href="@{/signup}">Create Free Account
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <a class="btn btn-outline" th:href="@{/login}">Sign In</a>
+        </div>
+        <div class="hero-proof">
+            <div class="avatar-stack">
+                <span class="avatar a1">SA</span>
+                <span class="avatar a2">RK</span>
+                <span class="avatar a3">NJ</span>
+                <span class="avatar a4">TM</span>
             </div>
-            <div class="feature">
-                <h3>Live Dashboard</h3>
-                <p>See your total spending and a clear category breakdown at a glance.</p>
+            <p>
+                <span class="stars">★★★★★</span><br>
+                <strong>4.9/5</strong> from thousands of budget-minded users
+            </p>
+        </div>
+    </div>
+
+    <div class="hero-visual">
+        <div class="mock-window">
+            <div class="mock-bar">
+                <span class="dots">
+                    <span class="dot-c"></span><span class="dot-c"></span><span class="dot-c"></span>
+                </span>
+                <span style="font-size:0.72rem;color:var(--muted);margin-left:8px;">hishabpati.app/dashboard</span>
             </div>
-            <div class="feature">
-                <h3>Your Data, Safe</h3>
-                <p>Personal accounts keep your expense history private and organized.</p>
+            <div class="mock-body">
+                <div class="mock-kpi">
+                    <div class="kpi"><small>This Month</small><strong class="teal">৳ 2,450</strong></div>
+                    <div class="kpi"><small>Daily Avg</small><strong>৳ 88</strong></div>
+                    <div class="kpi"><small>Remaining</small><strong class="amber">৳ 7,550</strong></div>
+                </div>
+                <div class="mock-chart">
+                    <span class="mcol" style="--i:1;height:38%"></span>
+                    <span class="mcol" style="--i:2;height:62%"></span>
+                    <span class="mcol" style="--i:3;height:48%"></span>
+                    <span class="mcol" style="--i:4;height:80%"></span>
+                    <span class="mcol" style="--i:5;height:55%"></span>
+                    <span class="mcol" style="--i:6;height:92%"></span>
+                    <span class="mcol" style="--i:7;height:70%"></span>
+                    <span class="mcol" style="--i:8;height:40%"></span>
+                </div>
+                <div class="mock-list">
+                    <div class="mrow">
+                        <span class="micon">🍛</span>
+                        <span class="minfo"><strong>Daily Lunch</strong><span>Food &amp; Dining</span></span>
+                        <span class="mamount" style="color:var(--amber-bright)">-৳ 220</span>
+                    </div>
+                    <div class="mrow">
+                        <span class="micon">⚡</span>
+                        <span class="minfo"><strong>Electricity Bill</strong><span>Utilities</span></span>
+                        <span class="mamount" style="color:var(--amber-bright)">-৳ 1,150</span>
+                    </div>
+                    <div class="mrow">
+                        <span class="micon">🛒</span>
+                        <span class="minfo"><strong>Weekly Groceries</strong><span>Shopping</span></span>
+                        <span class="mamount" style="color:var(--amber-bright)">-৳ 980</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
-</main>
+        <div class="float-chip chip-1">
+            <span class="chip-icon">✓</span>
+            <span><small>Today's spending</small><strong>-৳ 120</strong></span>
+        </div>
+        <div class="float-chip chip-2">
+            <span class="chip-icon">₹</span>
+            <span><small>Budget left</small><strong>৳ 7,550</strong></span>
+        </div>
+        <div class="float-chip chip-3">
+            <span class="chip-icon">📈</span>
+            <span><small>Saved vs last month</small><strong>+18%</strong></span>
+        </div>
+    </div>
+</header>
+
+<!-- Trusted by -->
+<section class="trust reveal">
+    <p>Loved by students, freelancers &amp; families across Bangladesh</p>
+    <div class="marquee">
+        <div class="marquee-track">
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.3 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg> FreelancerHub</span>
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM9 17H7v-4h2v4zm4 0h-2V7h2v10zm4 0h-2v-7h2v7z"/></svg> Dhaka Univeristy</span>
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7l9 4 9-4-9-4-9 4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg> TechStart BD</span>
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg> Khulna Corps</span>
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 2h12a2 2 0 0 1 2 2v4l4 4v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm3 6h8v2H7V8zm0 5h8v2H7v-2zm0 5h5v2H7v-2z"/></svg> CoWork Chittagong</span>
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.6 1.4 6.8L12 17.3 5.9 20.5l1.4-6.8L2.2 9.1l6.9-.8z"/></svg> FreelancerHub</span>
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 3H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM9 17H7v-4h2v4zm4 0h-2V7h2v10zm4 0h-2v-7h2v7z"/></svg> Dhaka Univeristy</span>
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7l9 4 9-4-9-4-9 4z"/><path d="M3 12l9 4 9-4"/><path d="M3 17l9 4 9-4"/></svg> TechStart BD</span>
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"/></svg> Khulna Corps</span>
+            <span class="logo-item"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 2h12a2 2 0 0 1 2 2v4l4 4v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm3 6h8v2H7V8zm0 5h8v2H7v-2zm0 5h5v2H7v-2z"/></svg> CoWork Chittagong</span>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section class="section" id="features">
+    <div class="section-head reveal">
+        <span class="eyebrow">Why HishabPati</span>
+        <h2>Everything you need to <span class="gradient-text">master your money</span></h2>
+        <p>Purpose-built for real life. No jargon, no clutter — just the tools that keep your daily spending on track.</p>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card reveal reveal-delay-1">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+            </div>
+            <h3>Easy Tracking</h3>
+            <p>Add expenses in seconds with categories, amounts and notes. Set reminders so nothing slips through the cracks.</p>
+            <span class="learn-more">Track in seconds
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 3v18h18M7 15l4-4 3 3 5-6"/>
+                </svg>
+            </div>
+            <h3>Live Dashboard</h3>
+            <p>See your total spending and a clear category breakdown at a glance with a beautiful, always-fresh dashboard.</p>
+            <span class="learn-more">See it live
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+        </div>
+        <div class="feature-card reveal reveal-delay-3">
+            <div class="feature-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="10" width="16" height="10" rx="2"/>
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v2"/>
+                </svg>
+            </div>
+            <h3>Your Data, Safe</h3>
+            <p>Personal accounts keep your expense history private, protected and organized — yours and only yours.</p>
+            <span class="learn-more">Stay protected
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+        </div>
+    </div>
+</section>
+
+<!-- Stats -->
+<section class="section">
+    <div class="stats-band reveal">
+        <div class="stat-item">
+            <div class="stat-num"><span data-count="12500">0</span><small>+</small></div>
+            <span>Expenses tracked daily</span>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num"><span data-count="8">0</span>k<small>+</small></div>
+            <span>Happy users</span>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">৳<span data-count="240">0</span>M<small>+</small></div>
+            <span>Money accounted for</span>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num"><span data-count="12">0</span><small>+</small></div>
+            <span>Spending categories</span>
+        </div>
+    </div>
+</section>
+
+<!-- How it works -->
+<section class="section" id="how">
+    <div class="section-head reveal">
+        <span class="eyebrow">How it works</span>
+        <h2>Start in <span class="gradient-text">three simple steps</span></h2>
+        <p>From zero to full control in under a minute.</p>
+    </div>
+    <div class="steps">
+        <div class="step-card reveal reveal-delay-1">
+            <div class="step-num">1</div>
+            <h3>Create your account</h3>
+            <p>Sign up for free with just your name and email. No card, no hassle.</p>
+        </div>
+        <div class="step-card reveal reveal-delay-2">
+            <div class="step-num">2</div>
+            <h3>Add your expenses</h3>
+            <p>Log each purchase with a category, amount and optional note — instantly.</p>
+        </div>
+        <div class="step-card reveal reveal-delay-3">
+            <div class="step-num">3</div>
+            <h3>Watch your insights</h3>
+            <p>Review totals and category breakdowns any time from your live dashboard.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonial -->
+<section class="section" id="testimonial">
+    <div class="testimonial">
+        <div class="quote-card reveal">
+            <span class="big-quote">“</span>
+            <blockquote>
+                I used to drown in random notes and bank screenshots. HishabPati gave me a
+                five-second habit that turned into real savings. I finally know where every
+                taka goes at the end of the month.
+            </blockquote>
+            <span class="stars">★★★★★</span>
+            <div class="quote-author">
+                <span class="avatar">RA</span>
+                <span>
+                    <strong>Rahim Ahmed</strong>
+                    <span>Freelance developer, Dhaka</span>
+                </span>
+            </div>
+        </div>
+        <div class="points">
+            <div class="point reveal reveal-delay-1">
+                <span class="point-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+                </span>
+                <span><strong>Instant &amp; lightweight</strong><p>No bloated apps — opens instantly on any device.</p></span>
+            </div>
+            <div class="point reveal reveal-delay-2">
+                <span class="point-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </span>
+                <span><strong>Local-first &amp; private</strong><p>Your expense history stays personal to your account.</p></span>
+            </div>
+            <div class="point reveal reveal-delay-3">
+                <span class="point-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                </span>
+                <span><strong>Truly simple</strong><p>Built around how people actually spend — by the day.</p></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="section">
+    <div class="cta-band reveal">
+        <span class="eyebrow">Ready to take control?</span>
+        <h2>Your first step to smarter spending <span class="gradient-text">starts here</span></h2>
+        <p>Join thousands already tracking with HishabPati. Free forever to start.</p>
+        <div class="cta-actions">
+            <a class="btn btn-primary" th:href="@{/signup}">Create Free Account
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a class="btn btn-ghost" th:href="@{/login}">I already have an account</a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-inner">
+        <a class="brand" th:href="@{/}">
+            <span class="logo-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/>
+                    <path d="M8 8h8M8 12h8M8 16h5"/>
+                </svg>
+            </span>
+            Hishab<em>Pati</em>
+        </a>
+        <div class="footer-links">
+            <a th:href="@{#features}">Features</a>
+            <a th:href="@{#how}">How it works</a>
+            <a th:href="@{#testimonial}">Stories</a>
+            <a th:href="@{/login}">Sign In</a>
+            <a th:href="@{/signup}">Sign Up</a>
+        </div>
+    </div>
+    <p class="footer-legal">© 2026 HishabPati · A simple day-to-day expense tracker · Made with care in Bangladesh</p>
+</footer>
+
+<script>
+    // Navbar shrink on scroll
+    var navbar = document.getElementById('navbar');
+    var onScroll = function () {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Reveal on scroll
+    var revealEls = document.querySelectorAll('.reveal');
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+
+    // Animated counters
+    var counters = document.querySelectorAll('[data-count]');
+    var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            cio.unobserve(el);
+            var target = parseInt(el.getAttribute('data-count'), 10);
+            var duration = 1600;
+            var start = null;
+            var step = function (ts) {
+                if (!start) start = ts;
+                var p = Math.min((ts - start) / duration, 1);
+                var eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = Math.floor(eased * target).toLocaleString('en-US');
+                if (p < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        });
+    }, { threshold: 0.6 });
+    counters.forEach(function (el) { cio.observe(el); });
+
+    // Feature card spotlight follow
+    var cards = document.querySelectorAll('.feature-card');
+    cards.forEach(function (card) {
+        card.addEventListener('mousemove', function (e) {
+            var r = card.getBoundingClientRect();
+            card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+            card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+        });
+    });
+</script>
 </body>
 </html>

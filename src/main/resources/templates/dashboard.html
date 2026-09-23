@@ -7,9 +7,24 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<div class="backdrop" aria-hidden="true">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+</div>
+<div class="grid-overlay" aria-hidden="true"></div>
+
 <nav class="navbar">
     <div class="navbar-inner">
-        <a class="brand" th:href="@{/dashboard}">HishabPati</a>
+        <a class="brand" th:href="@{/dashboard}">
+            <span class="logo-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1-2-1z"/>
+                    <path d="M8 8h8M8 12h8M8 16h5"/>
+                </svg>
+            </span>
+            Hishab<em>Pati</em>
+        </a>
         <div class="nav-links">
             <a class="active" th:href="@{/dashboard}">Dashboard</a>
             <a th:href="@{/expenses}">Expenses</a>
@@ -22,27 +37,55 @@
 </nav>
 
 <main class="container">
-    <h1 class="page-title">Welcome back, <span th:text="${user.name}">User</span></h1>
+    <h1 class="page-title">Welcome back, <span class="gradient-text" th:text="${user.name}">User</span></h1>
     <p class="page-subtitle">Here is how your money moved recently.</p>
 
     <div class="stats">
         <div class="stat-card">
-            <span class="stat-label">Total Expenses</span>
-            <span class="stat-value" th:text="${metrics.totalExpenses}">0</span>
+            <span class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="4" y="4" width="16" height="16" rx="3"/><path d="M9 12l2 2 4-4"/>
+                </svg>
+            </span>
+            <span class="stat-body">
+                <span class="stat-label">Total Expenses</span>
+                <span class="stat-value" th:text="${metrics.totalExpenses}">0</span>
+            </span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Total Spent</span>
-            <span class="stat-value accent" th:text="${'৳ ' + #numbers.formatDecimal(metrics.totalSpent, 1, 2)}">৳ 0.00</span>
+            <span class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                </svg>
+            </span>
+            <span class="stat-body">
+                <span class="stat-label">Total Spent</span>
+                <span class="stat-value accent" th:text="${'৳ ' + #numbers.formatDecimal(metrics.totalSpent, 1, 2)}">৳ 0.00</span>
+            </span>
         </div>
         <div class="stat-card">
-            <span class="stat-label">Categories Used</span>
-            <span class="stat-value" th:text="${metrics.categoryTotals.size()}">0</span>
+            <span class="stat-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20M4 19.5A2.5 2.5 0 0 0 6.5 22H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/>
+                </svg>
+            </span>
+            <span class="stat-body">
+                <span class="stat-label">Categories Used</span>
+                <span class="stat-value" th:text="${metrics.categoryTotals.size()}">0</span>
+            </span>
         </div>
     </div>
 
     <div class="grid-2">
         <section class="card">
-            <h2>Spending by Category</h2>
+            <h2>
+                <span class="card-ico">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v18h18M7 15l4-4 3 3 5-6"/>
+                    </svg>
+                </span>
+                Spending by Category
+            </h2>
             <div class="empty" th:if="${#lists.isEmpty(metrics.categoryTotals)}">
                 No spending yet. Add your first expense!
             </div>
@@ -58,25 +101,36 @@
         </section>
 
         <section class="card">
-            <h2>Recent Expenses</h2>
+            <h2>
+                <span class="card-ico amber">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </span>
+                Recent Expenses
+            </h2>
             <div class="empty" th:if="${#lists.isEmpty(recentExpenses)}">No expenses yet.</div>
-            <table class="table" th:if="${!#lists.isEmpty(recentExpenses)}">
-                <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Amount</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="expense : ${recentExpenses}">
-                    <td th:text="${expense.title}">Lunch</td>
-                    <td><span class="badge" th:text="${expense.category}">FOOD</span></td>
-                    <td th:text="${'৳ ' + #numbers.formatDecimal(expense.amount, 1, 2)}">৳ 0.00</td>
-                </tr>
-                </tbody>
-            </table>
-            <a class="btn btn-primary" th:href="@{/expenses}">Manage Expenses</a>
+            <div class="table-wrap" th:if="${!#lists.isEmpty(recentExpenses)}">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="expense : ${recentExpenses}">
+                        <td th:text="${expense.title}">Lunch</td>
+                        <td><span class="badge" th:text="${expense.category}">FOOD</span></td>
+                        <td class="amount" th:text="${'৳ ' + #numbers.formatDecimal(expense.amount, 1, 2)}">৳ 0.00</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 18px;">
+                <a class="btn btn-primary" th:href="@{/expenses}">Manage Expenses</a>
+            </div>
         </section>
     </div>
 </main>
