@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HishabPati</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="brand" th:href="@{/dashboard}">HishabPati</a>
+        <div class="nav-links">
+            <a class="active" th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/expenses}">Expenses</a>
+            <span class="nav-user" th:text="${user.name}">User</span>
+            <form class="inline-form" th:action="@{/logout}" method="post">
+                <button class="btn btn-ghost" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <h1 class="page-title">Welcome back, <span th:text="${user.name}">User</span></h1>
+    <p class="page-subtitle">Here is how your money moved recently.</p>
+
+    <div class="stats">
+        <div class="stat-card">
+            <span class="stat-label">Total Expenses</span>
+            <span class="stat-value" th:text="${metrics.totalExpenses}">0</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Total Spent</span>
+            <span class="stat-value accent" th:text="${'৳ ' + #numbers.formatDecimal(metrics.totalSpent, 1, 2)}">৳ 0.00</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Categories Used</span>
+            <span class="stat-value" th:text="${metrics.categoryTotals.size()}">0</span>
+        </div>
+    </div>
+
+    <div class="grid-2">
+        <section class="card">
+            <h2>Spending by Category</h2>
+            <div class="empty" th:if="${#lists.isEmpty(metrics.categoryTotals)}">
+                No spending yet. Add your first expense!
+            </div>
+            <dl class="breakdown" th:if="${!#lists.isEmpty(metrics.categoryTotals)}">
+                <div class="breakdown-row" th:each="cat : ${metrics.categoryTotals}">
+                    <dt th:text="${cat.category}">FOOD</dt>
+                    <div class="bar-wrapper">
+                        <div class="bar" th:style="'width:' + (${cat.total} * 100 / ${metrics.totalSpent}) + '%'"></div>
+                    </div>
+                    <dd th:text="${'৳ ' + #numbers.formatDecimal(cat.total, 1, 2)}">৳ 0.00</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section class="card">
+            <h2>Recent Expenses</h2>
+            <div class="empty" th:if="${#lists.isEmpty(recentExpenses)}">No expenses yet.</div>
+            <table class="table" th:if="${!#lists.isEmpty(recentExpenses)}">
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="expense : ${recentExpenses}">
+                    <td th:text="${expense.title}">Lunch</td>
+                    <td><span class="badge" th:text="${expense.category}">FOOD</span></td>
+                    <td th:text="${'৳ ' + #numbers.formatDecimal(expense.amount, 1, 2)}">৳ 0.00</td>
+                </tr>
+                </tbody>
+            </table>
+            <a class="btn btn-primary" th:href="@{/expenses}">Manage Expenses</a>
+        </section>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses - HishabPati</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="navbar-inner">
+        <a class="brand" th:href="@{/dashboard}">HishabPati</a>
+        <div class="nav-links">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a class="active" th:href="@{/expenses}">Expenses</a>
+            <span class="nav-user" th:text="${user.name}">User</span>
+            <form class="inline-form" th:action="@{/logout}" method="post">
+                <button class="btn btn-ghost" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+    <h1 class="page-title">Expenses</h1>
+    <p class="page-subtitle">Add, edit or remove your day-to-day expenses.</p>
+
+    <form class="card" th:if="${editing == null}" th:action="@{/expenses}" method="post">
+        <h2>Add New Expense</h2>
+        <div class="form-grid">
+            <div>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Friday lunch" required>
+            </div>
+            <div>
+                <label for="amount">Amount (৳)</label>
+                <input type="number" id="amount" name="amount" step="0.01" min="0" placeholder="250" required>
+            </div>
+            <div>
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option th:each="c : ${categories}" th:value="${c}" th:text="${c}">FOOD</option>
+                </select>
+            </div>
+            <div>
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date">
+            </div>
+            <div class="full">
+                <label for="note">Note (optional)</label>
+                <input type="text" id="note" name="note" placeholder="Paid with bKash">
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Add Expense</button>
+    </form>
+
+    <form class="card" th:if="${editing != null}" th:action="@{/expenses/{id}(id=${editing.id})}" method="post">
+        <h2>Edit Expense</h2>
+        <div class="form-grid">
+            <div>
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" th:value="${editing.title}" required>
+            </div>
+            <div>
+                <label for="amount">Amount (৳)</label>
+                <input type="number" id="amount" name="amount" step="0.01" min="0" th:value="${editing.amount}" required>
+            </div>
+            <div>
+                <label for="category">Category</label>
+                <select id="category" name="category">
+                    <option th:each="c : ${categories}" th:value="${c}" th:text="${c}"
+                            th:selected="${editing.category == c}">FOOD</option>
+                </select>
+            </div>
+            <div>
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" th:value="${editing.date}">
+            </div>
+            <div class="full">
+                <label for="note">Note (optional)</label>
+                <input type="text" id="note" name="note" th:value="${editing.note}">
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Save Changes</button>
+        <a class="btn btn-ghost" th:href="@{/expenses}">Cancel</a>
+    </form>
+
+    <section class="card">
+        <h2>All Expenses</h2>
+        <div class="empty" th:if="${#lists.isEmpty(expenses)}">No expenses yet. Add your first one above!</div>
+        <table class="table" th:if="${!#lists.isEmpty(expenses)}">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th class="actions">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="expense : ${expenses}">
+                <td th:text="${expense.title}">Lunch</td>
+                <td><span class="badge" th:text="${expense.category}">FOOD</span></td>
+                <td th:text="${'৳ ' + #numbers.formatDecimal(expense.amount, 1, 2)}">৳ 0.00</td>
+                <td th:text="${expense.date}">2026-09-23</td>
+                <td class="actions">
+                    <form class="inline-form" th:action="@{/expenses/{id}/delete(id=${expense.id})}" method="post"
+                          onsubmit="return confirm('Delete this expense?');">
+                        <button class="btn btn-small btn-danger" type="submit">Delete</button>
+                    </form>
+                    <a class="btn btn-small" th:href="@{/expenses/{id}/edit(id=${expense.id})}">Edit</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
