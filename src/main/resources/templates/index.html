@@ -27,18 +27,23 @@
             </span>
             Hishab<em>Pati</em>
         </a>
-        <div class="nav-links">
-            <a th:href="@{#features}">Features</a>
-            <a th:href="@{#how}">How it works</a>
-            <a th:href="@{#testimonial}">Stories</a>
-        </div>
-        <div class="nav-cta">
-            <a class="btn btn-ghost" th:href="@{/login}">Sign In</a>
-            <a class="btn btn-primary" th:href="@{/signup}">Get Started
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-menu" id="navMenu">
+            <div class="nav-links">
+                <a th:href="@{#features}">Features</a>
+                <a th:href="@{#how}">How it works</a>
+                <a th:href="@{#testimonial}">Stories</a>
+            </div>
+            <div class="nav-cta">
+                <a class="btn btn-ghost" th:href="@{/login}">Sign In</a>
+                <a class="btn btn-primary" th:href="@{/signup}">Get Started
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
         </div>
     </div>
 </nav>
@@ -335,6 +340,32 @@
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+
+    // Mobile menu toggle
+    var navToggle = document.getElementById('navToggle');
+    var navMenu = document.getElementById('navMenu');
+    function closeMenu() {
+        navMenu.classList.remove('open');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
+    navToggle.addEventListener('click', function () {
+        var open = navMenu.classList.toggle('open');
+        navToggle.classList.toggle('active', open);
+        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.style.overflow = open ? 'hidden' : '';
+    });
+    navMenu.querySelectorAll('a').forEach(function (a) {
+        a.addEventListener('click', closeMenu);
+    });
+    window.addEventListener('pointerdown', function (e) {
+        if (!navMenu.classList.contains('open')) return;
+        if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) closeMenu();
+    });
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 980) closeMenu();
+    });
 
     // Reveal on scroll
     var revealEls = document.querySelectorAll('.reveal');

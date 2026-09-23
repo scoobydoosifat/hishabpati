@@ -25,13 +25,18 @@
             </span>
             Hishab<em>Pati</em>
         </a>
-        <div class="nav-links">
-            <a th:href="@{/dashboard}">Dashboard</a>
-            <a class="active" th:href="@{/expenses}">Expenses</a>
-            <span class="nav-user" th:text="${user.name}">User</span>
-            <form class="inline-form" th:action="@{/logout}" method="post">
-                <button class="btn btn-ghost" type="submit">Logout</button>
-            </form>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-menu" id="navMenu">
+            <div class="nav-links">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <a class="active" th:href="@{/expenses}">Expenses</a>
+                <span class="nav-user" th:text="${user.name}">User</span>
+                <form class="inline-form" th:action="@{/logout}" method="post">
+                    <button class="btn btn-ghost" type="submit">Logout</button>
+                </form>
+            </div>
         </div>
     </div>
 </nav>
@@ -158,5 +163,32 @@
         </div>
     </section>
 </main>
+<script>
+    // Mobile menu toggle
+    var navToggle = document.getElementById('navToggle');
+    var navMenu = document.getElementById('navMenu');
+    function closeMenu() {
+        navMenu.classList.remove('open');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
+    navToggle.addEventListener('click', function () {
+        var open = navMenu.classList.toggle('open');
+        navToggle.classList.toggle('active', open);
+        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.style.overflow = open ? 'hidden' : '';
+    });
+    navMenu.querySelectorAll('a, form').forEach(function (el) {
+        el.addEventListener('click', closeMenu);
+    });
+    window.addEventListener('pointerdown', function (e) {
+        if (!navMenu.classList.contains('open')) return;
+        if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) closeMenu();
+    });
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 900) closeMenu();
+    });
+</script>
 </body>
 </html>

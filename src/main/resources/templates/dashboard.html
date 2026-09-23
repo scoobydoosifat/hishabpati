@@ -25,13 +25,18 @@
             </span>
             Hishab<em>Pati</em>
         </a>
-        <div class="nav-links">
-            <a class="active" th:href="@{/dashboard}">Dashboard</a>
-            <a th:href="@{/expenses}">Expenses</a>
-            <span class="nav-user" th:text="${user.name}">User</span>
-            <form class="inline-form" th:action="@{/logout}" method="post">
-                <button class="btn btn-ghost" type="submit">Logout</button>
-            </form>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="nav-menu" id="navMenu">
+            <div class="nav-links">
+                <a class="active" th:href="@{/dashboard}">Dashboard</a>
+                <a th:href="@{/expenses}">Expenses</a>
+                <span class="nav-user" th:text="${user.name}">User</span>
+                <form class="inline-form" th:action="@{/logout}" method="post">
+                    <button class="btn btn-ghost" type="submit">Logout</button>
+                </form>
+            </div>
         </div>
     </div>
 </nav>
@@ -49,7 +54,7 @@
             </span>
             <span class="stat-body">
                 <span class="stat-label">Total Expenses</span>
-                <span class="stat-value" th:text="${metrics.totalExpenses}">0</span>
+                <span class="stat-value" data-count="${metrics.totalExpenses}" th:text="${metrics.totalExpenses}">0</span>
             </span>
         </div>
         <div class="stat-card">
@@ -60,7 +65,7 @@
             </span>
             <span class="stat-body">
                 <span class="stat-label">Total Spent</span>
-                <span class="stat-value accent" th:text="${'৳ ' + #numbers.formatDecimal(metrics.totalSpent, 1, 2)}">৳ 0.00</span>
+                <span class="stat-value accent" data-count="${metrics.totalSpent}" data-money="true" th:text="${'৳ ' + #numbers.formatDecimal(metrics.totalSpent, 1, 2)}">৳ 0.00</span>
             </span>
         </div>
         <div class="stat-card">
@@ -71,7 +76,7 @@
             </span>
             <span class="stat-body">
                 <span class="stat-label">Categories Used</span>
-                <span class="stat-value" th:text="${metrics.categoryTotals.size()}">0</span>
+                <span class="stat-value" data-count="${metrics.categoryTotals.size()}" th:text="${metrics.categoryTotals.size()}">0</span>
             </span>
         </div>
     </div>
@@ -134,5 +139,62 @@
         </section>
     </div>
 </main>
+
+<script>
+    // Mobile menu toggle
+    var navToggle = document.getElementById('navToggle');
+    var navMenu = document.getElementById('navMenu');
+    function closeMenu() {
+        navMenu.classList.remove('open');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
+    navToggle.addEventListener('click', function () {
+        var open = navMenu.classList.toggle('open');
+        navToggle.classList.toggle('active', open);
+        navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        document.body.style.overflow = open ? 'hidden' : '';
+    });
+    navMenu.querySelectorAll('a, form').forEach(function (el) {
+        el.addEventListener('click', closeMenu);
+    });
+    window.addEventListener('pointerdown', function (e) {
+        if (!navMenu.classList.contains('open')) return;
+        if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) closeMenu();
+    });
+    window.addEventListener('resize', function () {
+        if (window.innerWidth > 900) closeMenu();
+    });
+
+    // Animated counters
+    var counters = document.querySelectorAll('[data-count]');
+    function animateCount(el, target, isMoney) {
+        var duration = 1400;
+        var start = null;
+        var step = function (ts) {
+            if (!start) start = ts;
+            var p = Math.min((ts - start) / duration, 1);
+            var eased = 1 - Math.pow(1 - p, 3);
+            var value = Math.floor(eased * target);
+            el.textContent = isMoney
+                ? '৳ ' + value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                : value.toLocaleString('en-US');
+            if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+    }
+    var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            cio.unobserve(el);
+            setTimeout(function () {
+                animateCount(el, parseFloat(el.getAttribute('data-count')) || 0, el.hasAttribute('data-money'));
+            }, 150);
+        });
+    }, { threshold: 0.4 });
+    counters.forEach(function (el) { cio.observe(el); });
+</script>
 </body>
 </html>
